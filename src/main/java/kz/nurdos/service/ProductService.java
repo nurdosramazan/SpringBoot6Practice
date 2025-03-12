@@ -1,13 +1,12 @@
 package kz.nurdos.service;
 
+import kz.nurdos.dto.ProductCreateForm;
+import kz.nurdos.dto.EntityMapper;
 import kz.nurdos.model.Product;
 import kz.nurdos.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -20,16 +19,20 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new NoSuchElementException("Product id " + productId + " not found"));
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Product id " + id + " not found"));
     }
 
-    public void saveProduct(Product product) {
+    public void addProduct(ProductCreateForm productForm) {
+        Product product = EntityMapper.toProduct(productForm);
         productRepository.save(product);
     }
 
-    public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
+    public void updateProduct(Product product) {
+    }
+
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
     }
 }

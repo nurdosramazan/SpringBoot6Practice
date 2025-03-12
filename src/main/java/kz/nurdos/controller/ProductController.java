@@ -1,40 +1,54 @@
 package kz.nurdos.controller;
 
+import jakarta.validation.Valid;
+import kz.nurdos.dto.ProductCreateForm;
+import kz.nurdos.exception.FormValidationException;
 import kz.nurdos.model.Product;
 import kz.nurdos.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
 
-    @GetMapping("/products")
-    public List<Product> getProducts() {
-        return productService.getProducts();
+    @GetMapping
+    public ResponseEntity<List<Product>> getProducts() {
+        List<Product> products = productService.getProducts();
+        return ResponseEntity.status(HttpStatus.OK).body(products);
     }
 
-    @GetMapping("/products/{productId}")
-    public Product getProductById(@PathVariable Long productId) {
-        return productService.getProductById(productId);
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        Product product = productService.getProductById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
-    @PostMapping("/products")
-    public void addProduct(@RequestBody Product product) {
-        productService.saveProduct(product);
+    @PostMapping
+    public ResponseEntity<String> addProduct(@Valid @RequestBody ProductCreateForm productForm,
+                                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) throw new FormValidationException(bindingResult);
+
+        productService.addProduct(productForm);
+        return ResponseEntity.status(HttpStatus.CREATED).body("The product was successfully added.");
     }
 
-    @PutMapping("/products")
-    public void updateProduct(@RequestBody Product product) {
-        productService.saveProduct(product);
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        productService.updateProduct(product);
+        return ResponseEntity.status(HttpStatus.OK).body("The product was successfully updated.");
     }
 
-    @DeleteMapping("/products/{productId}")
-    public void deleteProduct(@PathVariable Long productId){
-        productService.deleteProduct(productId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id){
+        productService.deleteProduct(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("The product was successfully deleted.");
     }
 }
