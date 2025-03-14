@@ -41,6 +41,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body("The product was successfully added.");
     }
 
+//    @PatchMapping
+//    public ResponseEntity<String> updateProductName()
+
     @PatchMapping("/{id}")
     public ResponseEntity<String> updateProductInfo(@PathVariable Long id,
                                                 @Valid @RequestBody ProductUpdateInfoForm productForm,
