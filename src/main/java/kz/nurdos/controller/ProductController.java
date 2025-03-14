@@ -1,7 +1,8 @@
 package kz.nurdos.controller;
 
 import jakarta.validation.Valid;
-import kz.nurdos.dto.ProductCreateForm;
+import kz.nurdos.dto.ProductAddForm;
+import kz.nurdos.dto.ProductUpdateInfoForm;
 import kz.nurdos.exception.FormValidationException;
 import kz.nurdos.model.Product;
 import kz.nurdos.service.ProductService;
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addProduct(@Valid @RequestBody ProductCreateForm productForm,
+    public ResponseEntity<String> addProduct(@Valid @RequestBody ProductAddForm productForm,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) throw new FormValidationException(bindingResult);
 
@@ -41,8 +42,12 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        productService.updateProduct(product);
+    public ResponseEntity<String> updateProductInfo(@PathVariable Long id,
+                                                @Valid @RequestBody ProductUpdateInfoForm productForm,
+                                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) throw new FormValidationException(bindingResult);
+
+        productService.updateProductInfo(id, productForm);
         return ResponseEntity.status(HttpStatus.OK).body("The product was successfully updated.");
     }
 

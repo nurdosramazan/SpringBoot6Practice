@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 //TODO: nonrelated fields in json request are accepted(jsonignore?)
 @Getter
-public class ProductCreateForm {
+public class ProductAddForm {
     @NotNull(message = "Name must be specified")
     @Length(min = 2, max = 50, message = "Name length is unacceptable.")
     private String name;
@@ -16,7 +16,7 @@ public class ProductCreateForm {
     private String description;
 
     @NotNull(message = "Price must be specified")
-    @PositiveOrZero(message = "Price is unacceptable")
+    @PositiveOrZero(message = "Provided price is unacceptable")
     private Double price;
 
     @NotNull(message = "Category must be specified")
@@ -24,6 +24,6 @@ public class ProductCreateForm {
     private String category;
 
     @NotNull(message = "Quantity must be specified")
-    @PositiveOrZero(message = "Quantity is unacceptable")
+    @PositiveOrZero(message = "Provided quantity is unacceptable")
     private Integer quantity;
 }

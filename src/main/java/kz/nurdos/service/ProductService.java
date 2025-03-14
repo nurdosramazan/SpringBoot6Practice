@@ -1,7 +1,8 @@
 package kz.nurdos.service;
 
-import kz.nurdos.dto.ProductCreateForm;
+import kz.nurdos.dto.ProductAddForm;
 import kz.nurdos.dto.EntityMapper;
+import kz.nurdos.dto.ProductUpdateInfoForm;
 import kz.nurdos.model.Product;
 import kz.nurdos.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +25,15 @@ public class ProductService {
                 .orElseThrow(() -> new NoSuchElementException("Product id " + id + " not found"));
     }
 
-    public void addProduct(ProductCreateForm productForm) {
+    public void addProduct(ProductAddForm productForm) {
         Product product = EntityMapper.toProduct(productForm);
         productRepository.save(product);
     }
 
-    public void updateProduct(Product product) {
+    public void updateProductInfo(Long id, ProductUpdateInfoForm productForm) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Product id " + id + " not found"));
+        product.setDescription();
     }
 
     public void deleteProduct(Long id) {

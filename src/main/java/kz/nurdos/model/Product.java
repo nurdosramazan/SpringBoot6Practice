@@ -35,10 +35,12 @@ public class Product {
 
     private String description;
 
+    @Column(nullable = false)
     private Double price;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String category;
+    //TODO: make Category enum and separate table in db
 
     @Column(updatable = false, nullable = false)
     @CreationTimestamp

@@ -2,8 +2,9 @@ package kz.nurdos.dto;
 
 import kz.nurdos.model.Product;
 
+//TODO: make Mapper?
 public class EntityMapper {
-    public static Product toProduct(ProductCreateForm productForm) {
+    public static Product toProduct(ProductAddForm productForm) {
         return Product.builder()
                 .name(productForm.getName())
                 .description(productForm.getDescription())
